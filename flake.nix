@@ -12,17 +12,17 @@
 
       packages = builtins.mapAttrs (system: pkgs:
         let
-          attrs = pkgs.lib.genAttrs (ghcVersion:
+          attrs = pkgs.lib.genAttrs ghcVersions (ghcVersion:
             pkgs.haskell.packages."ghc${ghcVersion}".developPackage {
               root = ./.;
               modifier = drv: pkgs.haskell.lib.appendConfigureFlag drv "-O2";
-            }) ghcVersions;
+            });
         in attrs // { default = attrs."${builtins.head ghcVersions}"; })
         nixpkgs.legacyPackages;
 
       devShells = builtins.mapAttrs (system: pkgs:
         let
-          attrs = pkgs.lib.genAttrs (ghcVersion:
+          attrs = pkgs.lib.genAttrs ghcVersions (ghcVersion:
             pkgs.haskell.packages."ghc${ghcVersion}".shellFor {
               packages = _: [ self.packages.${system}.default ];
               nativeBuildInputs = with pkgs; [
@@ -36,7 +36,7 @@
                 ghcid
               ];
               withHoogle = true;
-            }) ghcVersions;
+            });
         in attrs // { default = attrs."${builtins.head ghcVersions}"; })
         nixpkgs.legacyPackages;
 
