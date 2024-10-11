@@ -42,7 +42,7 @@
 
       checks = builtins.mapAttrs (system: pkgs:
         let
-          devShellChecks = builtins.mapAttrs' (ghcVersion: value: {
+          devShellChecks = pkgs.lib.mapAttrs' (ghcVersion: value: {
             name = "${ghcVersion}-shell";
             inherit value;
           }) self.devShells.${system};
