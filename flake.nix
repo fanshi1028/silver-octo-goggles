@@ -46,7 +46,7 @@
             name = "${ghcVersion}-shell";
             inherit value;
           }) self.devShells.${system};
-          packageChecks = builtins.mapAttrs' (ghcVersion: value: {
+          packageChecks = pkgs.lib.mapAttrs' (ghcVersion: value: {
             name = "${ghcVersion}-package";
             inherit value;
           }) self.packages.${system};
